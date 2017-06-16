@@ -34,8 +34,10 @@ def api():
 def upload_file():
     if request.method == 'POST':
         f = request.files['file']
-        f.save(secure_filename(f.filename))
-        return jsonify({"result":"file upload successfully"})
+        filename = secure_filename(f.filename)
+        f.save("/home/mofumofuchan/public/"+filename)
+        return jsonify({"result":"file upload successfully",
+                        "url":"http://v150-95-173-128.a0d3.g.tyo1.static.cnode.io/"+filename })
 
 if __name__ == "__main__":
     app.debug = True
