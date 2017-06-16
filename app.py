@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 import numpy as np
+from werkzeug import secure_filename
 
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
@@ -28,6 +29,13 @@ def api():
        "message": kaibun
    }
    return jsonify(ResultSet=result) 
+
+@app.route('/upload', methods = ['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        f = request.files['file']
+        f.save(secure_filename(f.filename))
+        return jsonify({"result":"file upload successfully"})
 
 if __name__ == "__main__":
     app.debug = True
