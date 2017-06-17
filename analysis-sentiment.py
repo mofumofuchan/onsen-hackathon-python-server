@@ -1,22 +1,20 @@
 import MeCab
-text = "こんにちは。とてもうれしいことが起こりました。本当にびっくりです。うれしい"
-#text = raw_input()
-print(text)
-nouns, verbs, adjs, advs = [], [], [], []
-nounswords, verbswords, adjswords, advswords = [], [], [], []
-nounspoint, verbspoint, adjspoint, advspoint = [], [], [], []
+
+class SentimentAnalyser(object)
+    text = "こんにちは。とてもうれしいことが起こりました。本当にびっくりです。うれしい"
+    nouns, verbs, adjs, advs = [], [], [], []
+    nounswords, verbswords, adjswords, advswords = [], [], [], []
+    nounspoint, verbspoint, adjspoint, advspoint = [], [], [], []
  
-def analyze(hinsi, words, point, score, number):
-    # global score, number
-    for i in hinsi:
-        cnt = 0
-        for j in words:
-            if i == j:
-                print(j, point[cnt])
-                score += float(point[cnt])
-                number += 1
-            cnt += 1
-    return score, number
+    def analyze(hinsi, words, point, score, number):
+        for i in hinsi:
+            cnt = 0
+            for j in words:
+                if i == j:
+                    score += float(point[cnt])
+                    number += 1
+                cnt += 1
+        return score, number
 
 if __name__ == "__main__":
     f = open('pn_ja.dic.txt', 'r')
