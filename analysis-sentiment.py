@@ -6,9 +6,8 @@ nouns, verbs, adjs, advs = [], [], [], []
 nounswords, verbswords, adjswords, advswords = [], [], [], []
 nounspoint, verbspoint, adjspoint, advspoint = [], [], [], []
  
-def analyze(hinsi, words, point):
-    #品詞分解したwordと辞書のwordが一致するかチェック
-    global score, number
+def analyze(hinsi, words, point, score, number):
+    # global score, number
     for i in hinsi:
         cnt = 0
         for j in words:
@@ -17,14 +16,14 @@ def analyze(hinsi, words, point):
                 score += float(point[cnt])
                 number += 1
             cnt += 1
+    return score, number
 
 if __name__ == "__main__":
-    #単語感情極性対応表を読み込む
     f = open('pn_ja.dic.txt', 'r')
     for line in f:
         line = line.rstrip()
         x = line.split(':')
-        if abs(float(x[3]))>0:	#ポイントの調整
+        if abs(float(x[3]))>0:
             if x[2] == '名詞':
                 nounswords.append(x[0])
                 nounspoint.append(x[3])
@@ -39,9 +38,8 @@ if __name__ == "__main__":
                 advspoint.append(x[3])
     f.close()
  
-    #mecabで文章を品詞分解する
     tagger = MeCab.Tagger('-Ochasen')
-    node = tagger.parseToNode(text.encode('utf-8'))
+    node = tagger.parseToNode(str(text))
     while node:
         if node.feature.split(",")[0] == '名詞':
             nouns.append(node.surface)
@@ -53,11 +51,11 @@ if __name__ == "__main__":
             advs.append(node.surface)
         node = node.next
  
-    #辞書を使って感情分析する
     score = number = 0
-    analyze(nouns,nounswords,nounspoint)
-    analyze(verbs,verbswords,verbspoint)
-    analyze(adjs,adjswords,adjspoint)
-    analyze(advs,advswords,advspoint)
+    score, number = analyze(nouns,nounswords,nounspoint,score,number)
+    score, number = analyze(verbs,verbswords,verbspoint,score,number)
+    score, number = analyze(adjs,adjswords,adjspoint,score,number)
+    score, number = analyze(advs,advswords,advspoint,score,number)
     if number > 0:
         print(score/number)
+
