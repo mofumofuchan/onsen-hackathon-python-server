@@ -1,12 +1,7 @@
 import MeCab
 
-class SentimentAnalyser(object)
-    text = "こんにちは。とてもうれしいことが起こりました。本当にびっくりです。うれしい"
-    nouns, verbs, adjs, advs = [], [], [], []
-    nounswords, verbswords, adjswords, advswords = [], [], [], []
-    nounspoint, verbspoint, adjspoint, advspoint = [], [], [], []
- 
-    def analyze(hinsi, words, point, score, number):
+class SentimentAnalyser(object):
+    def analyze(self, hinsi, words, point, score, number):
         for i in hinsi:
             cnt = 0
             for j in words:
@@ -17,6 +12,10 @@ class SentimentAnalyser(object)
         return score, number
 
     def __call__(self, text):
+        nouns, verbs, adjs, advs = [], [], [], []
+        nounswords, verbswords, adjswords, advswords = [], [], [], [] 
+        nounspoint, verbspoint, adjspoint, advspoint = [], [], [], []
+ 
         f = open('pn_ja.dic.txt', 'r')
         for line in f:
             line = line.rstrip()
@@ -50,9 +49,11 @@ class SentimentAnalyser(object)
             node = node.next
  
         score = number = 0
-        score, number = analyze(nouns,nounswords,nounspoint,score,number)
-        score, number = analyze(verbs,verbswords,verbspoint,score,number)
-        score, number = analyze(adjs,adjswords,adjspoint,score,number)
-        score, number = analyze(advs,advswords,advspoint,score,number)
+        score, number = self.analyze(nouns,nounswords,nounspoint,score,number)
+        score, number = self.analyze(verbs,verbswords,verbspoint,score,number)
+        score, number = self.analyze(adjs,adjswords,adjspoint,score,number)
+        score, number = self.analyze(advs,advswords,advspoint,score,number)
         if number > 0:
-            print(score/number)
+            return score/number
+        else:
+            return 0

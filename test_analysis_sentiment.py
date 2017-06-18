@@ -1,5 +1,5 @@
-from analysis-sentiment import SentimentAnalyser
+from analysis_sentiment import SentimentAnalyser
 
 text = "こんにちは。とてもうれしいことが起こりました。本当にびっくりです。うれしい"
 
-SentimentAnalyser()(text)
+print(SentimentAnalyser()(text))

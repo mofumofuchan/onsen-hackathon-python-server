@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
+from analysis_sentiment import SentimentAnalyser 
 import numpy as np
 from werkzeug import secure_filename
 
@@ -38,6 +39,13 @@ def upload_file():
         f.save("/home/mofumofuchan/public/"+filename)
         return jsonify({"result":"file upload successfully",
                         "url":"http://v150-95-173-128.a0d3.g.tyo1.static.cnode.io/"+filename })
+
+@app.route('/analyse_sentiment', methods = ['POST'])
+def analyse_sentiment():
+    text = request.json["text"]
+    score = SentimentAnalyser()(text)
+    return jsonify({"score":score})
+    
 
 if __name__ == "__main__":
     app.debug = True
